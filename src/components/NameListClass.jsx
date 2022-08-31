@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
 export default class NameListClass extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super()
         this.state = {
             nameList: [],
             first_name: '',
             last_name: '',
-            id: ''
+            num: ''
         }
     }
 
@@ -17,10 +17,23 @@ export default class NameListClass extends Component {
         .then(data => { this.setState({nameList:data}) })
     }
 
+    handleFirstInput(e){this.setState({first_name: e.target.value})}
+    handleLastInput(e){this.setState({last_name: e.target.value})}
+    handleIdInput(e){this.setState({num: e.target.value})}
+
     render(){
         let tableHeaders = ['#', 'First Name', 'Last Name','id']
         return(
             <>
+            <form>
+                <div className="row">
+                    <div className="col-2"><input type="text" className='form-control' name="first_name" value={this.state.first_name} onInput={this.handleFirstInput.bind(this)}/></div>
+                    <div className="col-2"><input type="text" className='form-control' name="last_name" value={this.state.last_name} onInput={this.handleLastInput.bind(this)}/></div>
+                    <div className="col-2"><input type="text" className='form-control' name="num" value={this.state.id} onInput={this.handleIdInput.bind(this)}/></div>
+                </div>
+            </form>
+
+            {/* ------------------------------------------------------------------------------- */}
                 <table className='table table-primary table-striped mt-3 w-50'>
                     <thead>
                         <tr>
@@ -29,7 +42,10 @@ export default class NameListClass extends Component {
                    </thead>
                         <tbody>
                             {this.state.nameList.map((person, idx) => 
-                                {
+                                { 
+                                    if((person.first_name.toLowerCase().search(this.state.first_name.toLowerCase())>=0 || this.state.first_name==='') &&
+                                       (person.last_name.toLowerCase().search(this.state.last_name.toLowerCase())>=0 || this.state.last_name==='') &&
+                                       (person.id==this.state.num || this.state.num===''))
                                     return(
                                         <tr key={idx}>
                                             <th>{idx}</th>
