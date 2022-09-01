@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import SortBy from "./SortedBy";
 
 export default class NameListClass extends Component {
     constructor(){
@@ -21,18 +22,27 @@ export default class NameListClass extends Component {
     handleLastInput(e){this.setState({last_name: e.target.value})}
     handleIdInput(e){this.setState({num: e.target.value})}
 
+    handleSort = (sortType) => {
+        let unsorted = [...this.state.nameList]
+        let sorted = unsorted.sort((a,b) => {
+            if (a[sortType] > b[sortType]) return 1
+            else return -1
+        })
+        this.setState({nameList:sorted})
+    }
+
     render(){
         let tableHeaders = ['#', 'First Name', 'Last Name','id']
         return(
             <>
-            <form>
-                <div className="row">
+            <form >
+                <div className="row mt-4">
                     <div className="col-2"><input type="text" className='form-control' name="first_name" value={this.state.first_name} onInput={this.handleFirstInput.bind(this)}/></div>
                     <div className="col-2"><input type="text" className='form-control' name="last_name" value={this.state.last_name} onInput={this.handleLastInput.bind(this)}/></div>
                     <div className="col-2"><input type="text" className='form-control' name="num" value={this.state.id} onInput={this.handleIdInput.bind(this)}/></div>
                 </div>
             </form>
-
+            <SortBy handleSort={this.handleSort}/>
             {/* ------------------------------------------------------------------------------- */}
                 <table className='table table-primary table-striped mt-3 w-50'>
                     <thead>
